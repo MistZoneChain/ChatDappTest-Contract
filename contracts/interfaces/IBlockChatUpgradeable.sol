@@ -2,15 +2,8 @@
 pragma solidity ^0.8.12;
 
 interface IBlockChatUpgradeable {
-    /* ================ EVENTS ================ */
-
     event MessageCreated(address indexed sender, bytes20 indexed recipientHash, uint48 createDate, string content);
-
     event DataUploaded(bytes32 indexed dataHash, string content);
-
-    /* ================ STRUCTS ================ */
-
-    /* ================ VIEW FUNCTIONS ================ */
 
     function messageHashMap(bytes32 messageHash) external view returns (bool);
 
@@ -40,8 +33,6 @@ interface IBlockChatUpgradeable {
         uint48 start,
         uint48 length
     ) external view returns (uint48[] memory);
-
-    /* ================ TRANSACTION FUNCTIONS ================ */
 
     function createMessage(
         bytes20 recipientHash,

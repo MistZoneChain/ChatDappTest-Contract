@@ -7,16 +7,12 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 
-contract BlockChatUpgradeable is IBlockChatUpgradeable, AccessControlUpgradeable, UUPSUpgradeable {
+contract BlockChatUpgradeable is IBlockChatUpgradeable, Initializable, AccessControlUpgradeable, UUPSUpgradeable {
+    mapping(address => uint48[]) public senderMessageBlockListMap;
     mapping(bytes20 => uint48[]) public recipientMessageBlockListMap;
+    mapping(bytes32 => bool) public messageHashMap;
     mapping(bytes32 => uint48) public dataBlockMap;
     uint48 public blockSkip;
-
-    mapping(bytes32 => bool) public messageHashMap;
-    mapping(address => uint48[]) public senderMessageBlockListMap;
-
-    /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor() initializer {}
 
     function initialize() public initializer {
         __AccessControl_init();
@@ -25,10 +21,8 @@ contract BlockChatUpgradeable is IBlockChatUpgradeable, AccessControlUpgradeable
         blockSkip = 5000;
     }
 
-    /* ================ UTIL FUNCTIONS ================ */
-
     modifier _onlyAdmin() {
-        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "BlockChatUpgradeable2: require admin permission");
+        require(hasRole(DEFAULT_ADMIN_ROLE, _msgSender()), "BlockChatUpgradeable: require admin permission");
         _;
     }
 
@@ -44,10 +38,8 @@ contract BlockChatUpgradeable is IBlockChatUpgradeable, AccessControlUpgradeable
         }
     }
 
-    /* ================ VIEW FUNCTIONS ================ */
-
     function implementationVersion() external pure override returns (string memory) {
-        return "1.0.1";
+        return "1.0.0";
     }
 
     function getRecipientHash(string calldata name) external pure override returns (bytes20) {
@@ -94,8 +86,6 @@ contract BlockChatUpgradeable is IBlockChatUpgradeable, AccessControlUpgradeable
         }
         return messageHashList;
     }
-
-    /* ================ TRANSACTION FUNCTIONS ================ */
 
     function createMessage(
         bytes20 recipientHash,
@@ -191,8 +181,6 @@ contract BlockChatUpgradeable is IBlockChatUpgradeable, AccessControlUpgradeable
         dataBlockMap[dataHash] = uint48(block.number);
         emit DataUploaded(dataHash, content);
     }
-
-    /* ================ ADMIN FUNCTIONS ================ */
 
     function setBlockSkip(uint48 newBlockSkip) external _onlyAdmin {
         blockSkip = newBlockSkip;

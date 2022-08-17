@@ -46,47 +46,14 @@ const config: HardhatUserConfig = {
       blockGasLimit: 60000000,
       initialBaseFeePerGas: 0,
     },
-    localhost: {
-      url: 'http://localhost:8545',
+    20220813: {
+      url: `https://mzc-testnet.seaeye.cn`,
       accounts,
-      timeout: 60000,
-      blockGasLimit: 60000000,
+      timeout: 10000,
       gasPrice: BigNumber.from(gasPrice)
         .mul(10 ** 9)
         .toNumber(),
-    },
-    1: {
-      url: `https://mainnet.infura.io/v3/${process.env.MAINNET_INFURA}`,
-      accounts,
-      timeout: 60000,
-      gasPrice: BigNumber.from(gasPrice)
-        .mul(10 ** 9)
-        .toNumber(),
-    },
-    4: {
-      url: `https://rinkeby.infura.io/v3/${process.env.RINKEBY_INFURA}`,
-      accounts,
-      timeout: 60000,
-      gasPrice: BigNumber.from(gasPrice)
-        .mul(10 ** 9)
-        .toNumber(),
-    },
-    56: {
-      url: `https://bsc-dataseed1.binance.org/`,
-      accounts,
-      timeout: 60000,
-      gasPrice: BigNumber.from(gasPrice)
-        .mul(10 ** 9)
-        .toNumber(),
-    },
-    97: {
-      url: `https://data-seed-prebsc-1-s1.binance.org:8545`,
-      accounts,
-      timeout: 60000,
-      gasPrice: BigNumber.from(gasPrice)
-        .mul(10 ** 9)
-        .toNumber(),
-    },
+    }
   },
   namedAccounts: {
     deployer: 0,
@@ -109,6 +76,6 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: process.env.APIKEY,
-  },
+  }
 };
 export default config;
