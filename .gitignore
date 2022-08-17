@@ -12,5 +12,5 @@ coverage/
 sdk/tsconfig.tsbuildinfo
 sdk/dist/
 envs/
+deployment.json
 coverage.json
-deployment/
